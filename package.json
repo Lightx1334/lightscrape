@@ -1,0 +1,24 @@
+{
+  "name": "lightscrape",
+  "version": "1.0.0",
+  "description": "Simple package for scraping",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lightx1334/lightscrape.git"
+  },
+  "keywords": ["pastebin", "scraper", "scrape", "scraping"],
+  "author": "Lightx1334",
+  "license": "OpenBSD",
+  "bugs": {
+    "url": "https://github.com/Lightx1334/lightscrape/issues"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "unirest": "^0.5.1"
+  },
+  "homepage": "https://github.com/Lightx1334/lightscrape"
+}
