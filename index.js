@@ -16,7 +16,7 @@ exports.pastebin = {
     },
     scrape_contents: function(links, cooldown, callback){
         var i = 0;
-        var loop = setTimeout(() => {
+        var loop = setInterval(() => {
             unirest.get('https://pastebin.com/raw/' + links[i]).end((res) => {
                 callback(links[i], res.body);
             });
