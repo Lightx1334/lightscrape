@@ -1,4 +1,5 @@
 # lightscrape
+[![Downloads](https://img.shields.io/npm/dt/lightscrape.svg)](https://www.npmjs.com/lightscrape)
 Simple package for scraping (currently only) Pastebin
 
 ## Installing
