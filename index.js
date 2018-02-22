@@ -1,10 +1,29 @@
 const cheerio = require('cheerio');
-const unirest = require('unirest');
+const snekfetch = require('snekfetch');
 
-exports.pastebin = {
-    scrape_links: function(callback){
-        unirest.get('https://pastebin.com/archive').end((res) => {
-            var $ = cheerio.load(res.body);
+module.exports = {
+    proxy: {
+        http_s: {
+            a: async function(amount, callback){
+                if(amount < 1 || amount > 20){
+                    console.error('Proxy amount range: 1 - 20');
+                    return;
+                }
+                const res = await snekfetch.get('https://free-proxy-list.net/');
+                const $ = cheerio.load(res.body);
+                var proxies = [];
+                for(var i = 0; i < amount; i++){
+                    var x = $('#proxylisttable').children().eq(1).children().eq(i);
+                    proxies.push($(x).children().eq(0).html() + ':' + $(x).children().eq(1).html());
+                }
+                callback(proxies);
+            }
+        }
+    },
+    pastebin: {
+        scrape_links: async function(callback){
+            const res = await snekfetch.get('https://pastebin.com/archive');
+            const $ = cheerio.load(res.body);
             var table = $(".maintable").children().eq(0).children();
             var links = [];
             for(var i = 1; i < 50; i++){
@@ -12,16 +31,15 @@ exports.pastebin = {
                 links.push(page);
             }
             callback(links);
-        });
-    },
-    scrape_contents: function(links, cooldown, callback){
-        var i = 0;
-        var loop = setInterval(() => {
-            unirest.get('https://pastebin.com/raw/' + links[i]).end((res) => {
+        },
+        scrape_contents: async function(links, cooldown, callback){
+            var i = 0;
+            var loop = setInterval(async () => {
+                const res = await snekfetch.get('https://pastebin.com/raw/' + links[i]);
                 callback(links[i], res.body);
-            });
-            if(i == links.length+1) clearInterval(loop);
-            i++;
-        }, cooldown);
+                if(i == links.length+1) clearInterval(loop);
+                i++;
+            }, cooldown);
+        }
     }
 };

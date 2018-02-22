@@ -1,6 +1,6 @@
 {
   "name": "lightscrape",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple package for scraping",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
-    "unirest": "^0.5.1"
+    "snekfetch": "^3.6.4" 
   },
   "homepage": "https://github.com/Lightx1334/lightscrape"
 }
