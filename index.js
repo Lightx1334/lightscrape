@@ -3,7 +3,7 @@ const snekfetch = require('snekfetch');
 
 module.exports = {
     proxy: {
-        freeproxylist: async function(amount, callback){
+        free_proxy_list: async function(amount, callback){
             if(amount < 1 || amount > 301){
                 console.error('Proxy amount range is 1 to 301!');
                 return;

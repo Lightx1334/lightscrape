@@ -9,12 +9,12 @@ Simple package for scraping both FreeProxyList.net and Pastebin
 `lightscrape.pastebin.scrape_links(callback)`  
 Callback: links (array)
 
-`lightscrape.pastebin.scrape_content(links, cooldown, callback);`  
+`lightscrape.pastebin.scrape_content(links, cooldown, callback)`  
 Links: Array of links (callback from scrape_links can be used)  
 Cooldown: How many milliseconds to wait before each scrape  
 Callback: page, content
 
-`lightscrape.proxy.freeproxylist(amount, callback)`
+`lightscrape.proxy.free_proxy_list(amount, callback)`  
 Amount: Number of proxies (range 1 to 301)  
 Callback: proxies in ip:port format (array)
 
@@ -34,11 +34,11 @@ lightscrape.pastebin.scrape_links(function(links){
 });
 ```
 
-## Simple snippet that fetches 20 proxies from FreeProxyList.net
+## Simple snippet that fetches 20 proxies from Free-Proxy-List.net
 ```js
 const lightscrape = require('lightscrape');
 
-lightscrape.proxy.freeproxylist(20, function(proxies){
+lightscrape.proxy.free_proxy_list(20, function(proxies){
     console.log(proxies);
 })
 ```
