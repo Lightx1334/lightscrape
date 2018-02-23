@@ -1,6 +1,6 @@
 # lightscrape
-[![Downloads](https://img.shields.io/npm/dt/lightscrape.svg)](https://www.npmjs.com/lightscrape)
-Simple package for scraping (currently only) Pastebin
+[![Downloads](https://img.shields.io/npm/dt/lightscrape.svg)](https://www.npmjs.com/lightscrape)  
+Simple package for scraping both FreeProxyList.net and Pastebin
 
 ## Installing
 `npm install lightscrape`
@@ -14,8 +14,12 @@ Links: Array of links (callback from scrape_links can be used)
 Cooldown: How many milliseconds to wait before each scrape  
 Callback: page, content
 
-## Example Usage (This example will download 49 pastes)
-```
+`lightscrape.proxy.freeproxylist(amount, callback)`
+Amount: Number of proxies (range 1 to 301)  
+Callback: proxies in ip:port format (array)
+
+## Simple snippet that downloads 49 pastes from Pastebin
+```js
 const lightscrape = require('lightscrape');
 const fs = require('fs');
 
@@ -28,6 +32,15 @@ lightscrape.pastebin.scrape_links(function(links){
         });
     });
 });
+```
+
+## Simple snippet that fetches 20 proxies from FreeProxyList.net
+```js
+const lightscrape = require('lightscrape');
+
+lightscrape.proxy.freeproxylist(20, function(proxies){
+    console.log(proxies);
+})
 ```
 
 ## License (OpenBSD)

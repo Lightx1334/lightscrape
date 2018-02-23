@@ -3,21 +3,19 @@ const snekfetch = require('snekfetch');
 
 module.exports = {
     proxy: {
-        http_s: {
-            a: async function(amount, callback){
-                if(amount < 1 || amount > 20){
-                    console.error('Proxy amount range: 1 - 20');
-                    return;
-                }
-                const res = await snekfetch.get('https://free-proxy-list.net/');
-                const $ = cheerio.load(res.body);
-                var proxies = [];
-                for(var i = 0; i < amount; i++){
-                    var x = $('#proxylisttable').children().eq(1).children().eq(i);
-                    proxies.push($(x).children().eq(0).html() + ':' + $(x).children().eq(1).html());
-                }
-                callback(proxies);
+        freeproxylist: async function(amount, callback){
+            if(amount < 1 || amount > 301){
+                console.error('Proxy amount range is 1 to 301!');
+                return;
             }
+            const res = await snekfetch.get('https://free-proxy-list.net/');
+            const $ = cheerio.load(res.body);
+            var proxies = [];
+            for(var i = 0; i < amount; i++){
+                var x = $('#proxylisttable').children().eq(1).children().eq(i);
+                proxies.push($(x).children().eq(0).html() + ':' + $(x).children().eq(1).html());
+            }
+            callback(proxies);
         }
     },
     pastebin: {
