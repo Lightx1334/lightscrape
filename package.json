@@ -1,24 +1,30 @@
 {
   "name": "lightscrape",
-  "version": "2.0.1",
-  "description": "Simple package for scraping",
+  "version": "3.0.0",
+  "description": "Simple Node.js module for scraping various sites",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Lightx1334/lightscrape.git"
   },
-  "keywords": ["pastebin", "scraper", "scrape", "scraping"],
+  "keywords": [
+    "pastebin",
+    "scraper",
+    "scrape",
+    "scraping",
+    "proxy"
+  ],
   "author": "Lightx1334",
-  "license": "OpenBSD",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/Lightx1334/lightscrape/issues"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
-    "snekfetch": "^3.6.4" 
+    "cheerio": "^1.0.0-rc.3",
+    "node-fetch": "^2.6.0"
   },
   "homepage": "https://github.com/Lightx1334/lightscrape"
 }

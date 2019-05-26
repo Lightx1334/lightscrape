@@ -1,43 +1,56 @@
 const cheerio = require('cheerio');
-const snekfetch = require('snekfetch');
+const fetch = require('node-fetch');
+const url = require('url');
+
+function getAllBlogPosts($) { return $('.post-title.entry-title').first().children(); }
+function getFirstBlogPostURL($) { return getAllBlogPosts($).first().prop('href'); }
 
 module.exports = {
-    proxy: {
-        free_proxy_list: async function(amount, callback){
-            if(amount < 1 || amount > 301){
-                console.error('Proxy amount range is 1 to 301!');
-                return;
-            }
-            const res = await snekfetch.get('https://free-proxy-list.net/');
-            const $ = cheerio.load(res.body);
-            var proxies = [];
-            for(var i = 0; i < amount; i++){
-                var x = $('#proxylisttable').children().eq(1).children().eq(i);
-                proxies.push($(x).children().eq(0).html() + ':' + $(x).children().eq(1).html());
-            }
-            callback(proxies);
+    async free_proxy_list() {
+        const res = await fetch('https://free-proxy-list.net/').then(res => res.text());
+        const $ = cheerio.load(res);
+        const table = $('#proxylisttable').children().eq(1).children(), proxies = [];
+        for(let i = 0; i < table.length; i++) {
+            let x = table.eq(i);
+            proxies.push($(x).children().eq(0).html() + ':' + $(x).children().eq(1).html());
         }
+        return proxies;
     },
-    pastebin: {
-        scrape_links: async function(callback){
-            const res = await snekfetch.get('https://pastebin.com/archive');
-            const $ = cheerio.load(res.body);
-            var table = $(".maintable").children().eq(0).children();
-            var links = [];
-            for(var i = 1; i < 50; i++){
-                var page = table.eq(i).children().eq(0).children().eq(1).attr("href").substring(1);
-                links.push(page);
-            }
-            callback(links);
-        },
-        scrape_contents: async function(links, cooldown, callback){
-            var i = 0;
-            var loop = setInterval(async () => {
-                const res = await snekfetch.get('https://pastebin.com/raw/' + links[i]);
-                callback(links[i], res.body);
-                if(i == links.length+1) clearInterval(loop);
-                i++;
-            }, cooldown);
+
+    async live_socks() {
+        const res = await fetch('http://www.live-socks.net/').then(res => res.text());
+        const ress = await fetch(getFirstBlogPostURL(cheerio.load(res))).then(res => res.text());
+        const $ = cheerio.load(ress);
+        return $('textarea').first().val().trim().split('\n');
+    },
+
+    async duckduckgo(query) {
+        const res = await fetch('https://duckduckgo.com/html/?q='+encodeURIComponent(query)).then(res => res.text());
+        const $ = cheerio.load(res);
+        const list = $('.result__url'), results = [];
+        for(let i = 1; i < list.length; i++) {
+            results.push(url.parse(list.eq(i).prop('href'), true).query.uddg);
         }
+        return results;
+    },
+
+    async google(query) {
+        const res = await fetch('https://www.google.com/search?q='+encodeURIComponent(query)).then(res => res.text());
+        const $ = cheerio.load(res);
+        const list = $('a[href^="/url?q="]'), results = [];
+        for(let i = 0; i < list.length; i++) {
+            results.push(url.parse(list.eq(i).prop('href'), true).query.q);
+        }
+        return results;
+    },
+
+    async pastebin(lang) {
+        const res = await fetch('https://pastebin.com/archive' + (!lang ? '' : '/' + lang)).then(res => res.text());
+        const $ = cheerio.load(res);
+        const table = $('.maintable').children().first().children(), ids = [];
+        for(let i = 1; i < table.length; i++) {
+            ids.push(url.parse(table.eq(i).children().first().children().eq(1).prop('href')).pathname.substr(1));
+        }
+        return ids;
     }
 };
